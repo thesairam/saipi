@@ -15,7 +15,8 @@
     <div class="course-list">
       <div class="course" v-for="(course, index) in courses" :key="index">
         <div class="course-header">
-          <img src="https://via.placeholder.com/150?text=Raspberry+Pi" alt="Course Image" class="course-image"/>
+          <!-- Updated to use correct image paths -->
+          <img :src="require(`@/assets/images/courses/${getImageName(index)}`)" alt="Course Image" class="course-image"/>
           <h3>{{ course.name }}</h3>
         </div>
         <p>{{ course.description }}</p>
@@ -51,6 +52,17 @@ export default {
     };
   },
   methods: {
+    getImageName(index) {
+      const images = [
+        'raspberry-pi.png',
+        'analytics.png',
+        'robot.png',
+        'python.png',
+        'file.png',
+        'nas.png'
+      ];
+      return images[index];
+    },
     addToCart(course) {
       this.cart.push(course);
     },
@@ -123,6 +135,14 @@ h3 {
   width: 80px;
   height: 80px;
   margin-right: 15px;
+  border-radius: 10px; /* Rounded corners for the image */
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.course-image:hover {
+  transform: scale(1.1); /* Slightly enlarge the image on hover */
 }
 
 .course p {

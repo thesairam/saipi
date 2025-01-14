@@ -1,51 +1,65 @@
 <template>
     <div class="home">
+      <!-- Hero Section -->
       <section class="hero">
-        <div class="hero-content">
+        <!-- Image as background, no content here -->
+      </section>
+  
+      <!-- Content Section -->
+      <section class="content">
+        <div class="content-wrapper">
           <h1>Welcome to Saipi.AI</h1>
           <p>Learn the latest in tech and build with our own infrastructure.</p>
           <router-link to="/courses" class="cta-button">Explore Courses</router-link>
         </div>
       </section>
+  
+      <!-- Footer Component -->
+      <AppFooter />
     </div>
   </template>
   
   <script>
+  import AppFooter from "@/components/AppFooter.vue"; // Import the footer component
+  
   export default {
     name: "HomePage",
+    components: {
+      AppFooter, // Register the footer component
+    },
   };
   </script>
   
   <style scoped>
+  /* Hero Section */
   .hero {
-    background: url('@/assets/images/linux-terminal.jpeg') no-repeat center center/cover;
-    padding: 100px 20px;
-    color: #fff;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+    background: url('@/assets/images/linux-terminal.jpg') no-repeat center center/cover;
+    height: 50vh; /* Reduced height */
     position: relative;
     z-index: 1;
   }
   
-  .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    position: relative;
-    z-index: 2;
+  /* Content Section */
+  .content {
+    background-color: #fff;
+    padding: 50px 20px;
+    text-align: center;
   }
   
-  .hero h1 {
-    font-size: 3.5em;
+  .content-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .content h1 {
+    font-size: 3em;
     color: #00ff00;
-    text-transform: uppercase;
     font-weight: bold;
   }
   
-  .hero p {
+  .content p {
     font-size: 1.2em;
-    color: #ccc;
+    color: #333;
     margin: 20px 0;
   }
   
@@ -65,12 +79,9 @@
     background-color: #007bff;
   }
   
+  /* Responsive Design */
   @media screen and (max-width: 768px) {
-    .hero {
-      padding: 50px 15px;
-    }
-  
-    .hero h1 {
+    .content h1 {
       font-size: 2.5em;
     }
   
