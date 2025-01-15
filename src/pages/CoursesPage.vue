@@ -15,8 +15,11 @@
     <div class="course-list">
       <div class="course" v-for="(course, index) in courses" :key="index">
         <div class="course-header">
-          <!-- Updated to use correct image paths -->
-          <img :src="require(`@/assets/images/courses/${getImageName(index)}`)" alt="Course Image" class="course-image"/>
+          <img
+            :src="require(`@/assets/images/courses/${getImageName(index)}`)"
+            alt="Course Image"
+            class="course-image"
+          />
           <h3>{{ course.name }}</h3>
         </div>
         <p>{{ course.description }}</p>
@@ -25,9 +28,9 @@
     </div>
 
     <!-- WhatsApp input section -->
-    <div v-if="showWhatsappInput" class="whatsapp-input">
+    <div v-if="showWhatsappInput" class="whatsapp-input" ref="whatsappSection">
       <h3>Enter your WhatsApp number to proceed</h3>
-      <input v-model="whatsappNumber" type="text" placeholder="Your WhatsApp Number"/>
+      <input v-model="whatsappNumber" type="text" placeholder="Your WhatsApp Number" />
       <button @click="sendWhatsappMessage">Send WhatsApp Message</button>
     </div>
   </div>
@@ -53,14 +56,7 @@ export default {
   },
   methods: {
     getImageName(index) {
-      const images = [
-        'raspberry-pi.png',
-        'analytics.png',
-        'robot.png',
-        'python.png',
-        'file.png',
-        'nas.png'
-      ];
+      const images = ["raspberry-pi.png", "analytics.png", "robot.png", "python.png", "file.png", "nas.png"];
       return images[index];
     },
     addToCart(course) {
@@ -69,6 +65,14 @@ export default {
     checkout() {
       if (this.cart.length > 0) {
         this.showWhatsappInput = true;
+
+        // Scroll to the WhatsApp input section
+        this.$nextTick(() => {
+          const whatsappSection = this.$refs.whatsappSection;
+          if (whatsappSection) {
+            whatsappSection.scrollIntoView({ behavior: "smooth" });
+          }
+        });
       } else {
         alert("Your cart is empty!");
       }
@@ -79,8 +83,8 @@ export default {
       } else {
         alert("Please enter a valid WhatsApp number.");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -135,14 +139,14 @@ h3 {
   width: 80px;
   height: 80px;
   margin-right: 15px;
-  border-radius: 10px; /* Rounded corners for the image */
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow effect */
-  transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
 }
 
 .course-image:hover {
-  transform: scale(1.1); /* Slightly enlarge the image on hover */
+  transform: scale(1.1);
 }
 
 .course p {
