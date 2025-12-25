@@ -1,93 +1,162 @@
 <template>
-    <div class="home">
-      <!-- Hero Section -->
-      <section class="hero">
-        <!-- Image as background, no content here -->
-      </section>
-  
-      <!-- Content Section -->
-      <section class="content">
-        <div class="content-wrapper">
-          <h1>Welcome to Saipi.AI</h1>
-          <p>Learn the latest in tech and build with our own infrastructure.</p>
-          <router-link to="/courses" class="cta-button">Explore Courses</router-link>
+  <div class="home">
+    <section class="hero">
+      <div class="hero-overlay">
+        <p class="eyebrow">Education 4.0</p>
+        <h1>Learn hardware-backed products with confidence.</h1>
+        <p class="lede">We teach by building: Raspberry Pi, Linux, cloud, robotics—no passive watching.</p>
+        <div class="actions">
+          <router-link to="/courses" class="cta">Explore builds</router-link>
+          <router-link to="/contact" class="ghost">Talk to us</router-link>
         </div>
-      </section>
-  
-      <!-- Footer Component -->
-      <AppFooter />
-    </div>
-  </template>
-  
-  <script>
-  import AppFooter from "@/components/AppFooter.vue"; // Import the footer component
-  
-  export default {
-    name: "HomePage",
-    components: {
-      AppFooter, // Register the footer component
-    },
-  };
-  </script>
-  
-  <style scoped>
-  /* Hero Section */
+      </div>
+    </section>
+
+    <section class="highlights">
+      <div class="tile">
+        <h3>Hands-on sprints</h3>
+        <p>One week to build and demo on your own Raspberry Pi.</p>
+      </div>
+      <div class="tile">
+        <h3>Zero fluff</h3>
+        <p>Concepts tied to deliverables: rover control, self-hosted storage, secure access.</p>
+      </div>
+      <div class="tile">
+        <h3>Career-ready</h3>
+        <p>Education 4.0 mindset—automation, autonomy, and build-first learning over slides.</p>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "HomePage",
+};
+</script>
+
+<style scoped>
+.home {
+  background: #061a14;
+  color: #e8f4ed;
+}
+
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 24px;
+  background: linear-gradient(120deg, rgba(26, 163, 111, 0.25) 0%, rgba(11, 45, 38, 0.9) 60%),
+    url('@/assets/images/linux-terminal.jpg') center/cover;
+}
+
+.hero-overlay {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(124, 242, 192, 0.15);
+  color: #7cf2c0;
+  border: 1px solid rgba(124, 242, 192, 0.4);
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 16px 0 12px;
+  font-size: 2.8rem;
+  letter-spacing: -0.02em;
+}
+
+.lede {
+  color: #c4e1d3;
+  font-size: 1.1rem;
+  max-width: 620px;
+}
+
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.cta,
+.ghost {
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cta {
+  background: linear-gradient(120deg, #1aa36f 0%, #16c487 100%);
+  color: #0b2d26;
+  box-shadow: 0 18px 40px rgba(22, 196, 135, 0.25);
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(22, 196, 135, 0.35);
+}
+
+.ghost {
+  border: 1px solid rgba(124, 242, 192, 0.35);
+  color: #e8f4ed;
+  background: transparent;
+}
+
+.ghost:hover {
+  background: rgba(124, 242, 192, 0.12);
+  transform: translateY(-2px);
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 36px 24px 80px;
+  background: #0b2d26;
+}
+
+.tile {
+  border: 1px solid rgba(124, 242, 192, 0.15);
+  border-radius: 14px;
+  padding: 18px 16px;
+  background: rgba(6, 26, 20, 0.9);
+  color: #d9efe3;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.tile h3 {
+  margin: 0 0 8px;
+}
+
+.tile p {
+  margin: 0;
+  color: #b4d3c3;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
   .hero {
-    background: url('@/assets/images/linux-terminal.jpg') no-repeat center center/cover;
-    height: 50vh; /* Reduced height */
-    position: relative;
-    z-index: 1;
+    padding: 64px 18px;
+    min-height: 65vh;
   }
-  
-  /* Content Section */
-  .content {
-    background-color: #fff;
-    padding: 50px 20px;
-    text-align: center;
+
+  .actions {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .content-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .content h1 {
-    font-size: 3em;
-    color: #00ff00;
-    font-weight: bold;
-  }
-  
-  .content p {
-    font-size: 1.2em;
-    color: #333;
-    margin: 20px 0;
-  }
-  
-  .cta-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 25px;
-    background-color: #00ff00;
-    color: #1b1b1b;
-    font-size: 1.2em;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cta-button:hover {
-    background-color: #007bff;
-  }
-  
-  /* Responsive Design */
-  @media screen and (max-width: 768px) {
-    .content h1 {
-      font-size: 2.5em;
-    }
-  
-    .cta-button {
-      font-size: 1em;
-    }
-  }
-  </style>
+}
+</style>
   

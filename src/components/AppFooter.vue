@@ -1,17 +1,15 @@
 <template>
   <footer class="footer">
-    <p>&copy; 2024 Saipi.AI. All rights reserved.</p>
+    <p>&copy; 2024 Saipi.AI — Education 4.0 builds on Raspberry Pi.</p>
   </footer>
 </template>
 
 <style scoped>
 .footer {
-  background-color: #333;
-  color: white;
+  background: #061a14;
+  color: #b4d3c3;
   text-align: center;
   padding: 20px 0;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
+  border-top: 1px solid rgba(124, 242, 192, 0.15);
 }
 </style>

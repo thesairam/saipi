@@ -1,39 +1,39 @@
 <template>
-  <div class="courses">
-    <h2>Explore Our Courses</h2>
-
-    <!-- Cart Section -->
-    <div v-if="cart.length > 0" class="cart">
-      <h3>Your Cart</h3>
-      <ul>
-        <li v-for="(course, index) in cart" :key="index">{{ course.name }}</li>
-      </ul>
-      <button @click="checkout">Proceed to Checkout</button>
+  <section class="courses">
+    <div class="intro">
+      <p class="eyebrow">Education 4.0</p>
+      <h2>Build real things, fast</h2>
+      <p class="lede">Three deep-dive, hands-on builds on Raspberry Pi. Zero fluff—learn by doing.</p>
     </div>
 
-    <!-- Course List Section -->
-    <div class="course-list">
-      <div class="course" v-for="(course, index) in courses" :key="index">
-        <div class="course-header">
-          <img
-            :src="require(`@/assets/images/courses/${getImageName(index)}`)"
-            alt="Course Image"
-            class="course-image"
-          />
-          <h3>{{ course.name }}</h3>
+    <div class="course-grid">
+      <article
+        v-for="course in courses"
+        :key="course.id"
+        class="course-card"
+      >
+        <div class="card-top">
+          <div class="pill">{{ course.duration }}</div>
+          <h3>{{ course.title }}</h3>
+          <p class="summary">{{ course.summary }}</p>
         </div>
-        <p>{{ course.description }}</p>
-        <button @click="addToCart(course)" class="add-to-cart-btn">Add to Cart</button>
-      </div>
+        <div class="card-meta">
+          <span class="price">{{ course.cost }}</span>
+          <button class="cta" @click="toggleDetails(course.id)">
+            {{ isOpen(course.id) ? 'Hide details' : 'See details' }}
+          </button>
+        </div>
+        <transition name="fade">
+          <div v-if="isOpen(course.id)" class="details">
+            <ul>
+              <li v-for="(item, index) in course.details" :key="index">{{ item }}</li>
+            </ul>
+            <p class="note">Kit is optional and priced extra; availability may vary.</p>
+          </div>
+        </transition>
+      </article>
     </div>
-
-    <!-- WhatsApp input section -->
-    <div v-if="showWhatsappInput" class="whatsapp-input" ref="whatsappSection">
-      <h3>Enter your WhatsApp number to proceed</h3>
-      <input v-model="whatsappNumber" type="text" placeholder="Your WhatsApp Number" />
-      <button @click="sendWhatsappMessage">Send WhatsApp Message</button>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -41,189 +41,213 @@ export default {
   name: "CoursesPage",
   data() {
     return {
+      openIds: [],
       courses: [
-        { name: "Raspberry Pi + Linux", description: "Learn to use Raspberry Pi with Linux for various applications." },
-        { name: "Raspberry Pi + Data Analytics", description: "Master data analytics techniques using Raspberry Pi and popular libraries." },
-        { name: "Raspberry Pi + Robotics", description: "Build exciting robotics projects using Raspberry Pi." },
-        { name: "Raspberry Pi + Python", description: "Learn Python programming and apply it to Raspberry Pi projects." },
-        { name: "Raspberry Pi + Vue.js", description: "Explore web development with Vue.js and Raspberry Pi." },
-        { name: "Raspberry Pi as NAS", description: "Turn your Raspberry Pi into a Network-Attached Storage (NAS) server." },
-      ],
-      cart: [],
-      showWhatsappInput: false,
-      whatsappNumber: "",
+        {
+          id: "rover",
+          title: "Build a Rover!",
+          duration: "1 week sprint",
+          cost: "200 Euros (+ kit)",
+          summary: "Raspberry Pi rover with mobile control, sensors, and GPIO mastery.",
+          details: [
+            "Set up Raspberry Pi and fundamentals of Linux",
+            "Python essentials for hardware control",
+            "GPIO and sensor wiring with safe power practices",
+            "Remote control via mobile app",
+            "Field test and tune for rough terrain"
+          ]
+        },
+        {
+          id: "drive",
+          title: "Build your own Google Drive!",
+          duration: "1 week sprint",
+          cost: "150 Euros (+ kit)",
+          summary: "Self-hosted cloud storage on Raspberry Pi using open source stacks.",
+          details: [
+            "Linux and Raspberry Pi hardening",
+            "Deploy open source cloud storage (Nextcloud/Seafile style)",
+            "Expose your storage via your own website",
+            "Secure access, backups, and uptime basics",
+            "Ship and demo from your own Pi"
+          ]
+        },
+        {
+          id: "agents",
+          title: "Build your own ChatGPT + AI Agents!",
+          duration: "1 week sprint",
+          cost: "100 Euros",
+          summary: "Open-source LLM stacks on Raspberry Pi with web UIs and starter agents.",
+          details: [
+            "Linux and Raspberry Pi fundamentals for AI workloads",
+            "Run open-source LLMs and lightweight web UIs",
+            "Wire up prompt pipelines and basic agent loops",
+            "Integrate simple tools/APIs for your agents",
+            "Demo your local AI assistant"
+          ]
+        }
+      ]
     };
   },
   methods: {
-    getImageName(index) {
-      const images = ["raspberry-pi.png", "analytics.png", "robot.png", "python.png", "file.png", "nas.png"];
-      return images[index];
-    },
-    addToCart(course) {
-      this.cart.push(course);
-    },
-    checkout() {
-      if (this.cart.length > 0) {
-        this.showWhatsappInput = true;
-
-        // Scroll to the WhatsApp input section
-        this.$nextTick(() => {
-          const whatsappSection = this.$refs.whatsappSection;
-          if (whatsappSection) {
-            whatsappSection.scrollIntoView({ behavior: "smooth" });
-          }
-        });
+    toggleDetails(id) {
+      if (this.openIds.includes(id)) {
+        this.openIds = this.openIds.filter(openId => openId !== id);
       } else {
-        alert("Your cart is empty!");
+        this.openIds.push(id);
       }
     },
-    sendWhatsappMessage() {
-      if (this.whatsappNumber) {
-        alert(`Sending a message to WhatsApp number: ${this.whatsappNumber}`);
-      } else {
-        alert("Please enter a valid WhatsApp number.");
-      }
-    },
-  },
+    isOpen(id) {
+      return this.openIds.includes(id);
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Base layout styling */
 .courses {
-  padding: 40px;
-  background-color: #1b1b1b;
-  color: #fff;
-  font-family: 'Roboto', sans-serif;
+  padding: 64px 24px 96px;
+  background: radial-gradient(120% 120% at 20% 20%, #164434 0%, #0b2d26 45%, #061a14 100%);
+  color: #e8f4ed;
+}
+
+.intro {
+  max-width: 800px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(26, 163, 111, 0.12);
+  color: #7cf2c0;
+  border: 1px solid rgba(124, 242, 192, 0.4);
+  border-radius: 999px;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
 }
 
 h2 {
-  text-align: center;
-  font-size: 3em;
-  margin-bottom: 30px;
-  color: #00ff00;
+  font-size: 2.8rem;
+  margin: 12px 0 8px;
+  letter-spacing: -0.02em;
 }
 
-h3 {
-  color: #00ff00;
+.lede {
+  color: #c6ded1;
+  font-size: 1.1rem;
 }
 
-.course-list {
+.course-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-.course {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.course:hover {
-  transform: translateY(-10px);
-}
-
-.course-header {
+.course-card {
+  background: rgba(11, 45, 38, 0.85);
+  border: 1px solid rgba(124, 242, 192, 0.15);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124, 242, 192, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.card-top h3 {
+  margin: 10px 0 8px;
+  font-size: 1.6rem;
+}
+
+.card-top .summary {
+  color: #b8d7c6;
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(124, 242, 192, 0.16);
+  color: #7cf2c0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.card-meta {
+  margin-top: 18px;
+  display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.course-image {
-  width: 80px;
-  height: 80px;
-  margin-right: 15px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
+.price {
+  font-weight: 700;
+  color: #ffffff;
 }
 
-.course-image:hover {
-  transform: scale(1.1);
-}
-
-.course p {
-  font-size: 1rem;
-  color: #bbb;
-  margin-bottom: 20px;
-}
-
-.add-to-cart-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
+.cta {
+  background: linear-gradient(120deg, #1aa36f 0%, #16c487 100%);
+  color: #0b2d26;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #0056b3;
-}
-
-.cart {
-  margin-bottom: 40px;
-  padding: 20px;
-  background-color: #444;
+  padding: 10px 16px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.cart ul {
-  list-style: none;
-  padding: 0;
-  color: #bbb;
-}
-
-.cart button {
-  background-color: #28a745;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
+  font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cart button:hover {
-  background-color: #218838;
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(22, 196, 135, 0.35);
 }
 
-/* WhatsApp Input Section */
-.whatsapp-input {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 30px;
-  text-align: center;
+.details {
+  margin-top: 16px;
+  padding: 14px 12px;
+  border-radius: 14px;
+  background: rgba(6, 26, 20, 0.8);
+  border: 1px solid rgba(124, 242, 192, 0.12);
 }
 
-.whatsapp-input input {
-  padding: 12px;
-  font-size: 1.2rem;
-  margin-right: 10px;
-  border: 2px solid #bbb;
-  border-radius: 5px;
-  width: 250px;
+.details ul {
+  padding-left: 18px;
+  color: #d7f0e3;
+  line-height: 1.6;
 }
 
-.whatsapp-input button {
-  background-color: #25d366;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.note {
+  margin-top: 10px;
+  color: #9dcab3;
+  font-size: 0.95rem;
 }
 
-.whatsapp-input button:hover {
-  background-color: #128c7e;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  .courses {
+    padding: 48px 18px 72px;
+  }
 }
 </style>
