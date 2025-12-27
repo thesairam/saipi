@@ -14,16 +14,16 @@
 
     <section class="highlights">
       <div class="tile">
-        <h3>Hands-on sprints</h3>
-        <p>One week to build and demo on your own Raspberry Pi.</p>
+        <h3>Education 4.0: Build-first</h3>
+        <p>Short, applied loops: learn a concept, wire it to hardware, ship a demo the same day.</p>
       </div>
       <div class="tile">
-        <h3>Zero fluff</h3>
-        <p>Concepts tied to deliverables: rover control, self-hosted storage, secure access.</p>
+        <h3>Education 4.0: Adaptive</h3>
+        <p>Projects scale with you—AI, automation, and cloud skills layered as you progress.</p>
       </div>
       <div class="tile">
-        <h3>Career-ready</h3>
-        <p>Education 4.0 mindset—automation, autonomy, and build-first learning over slides.</p>
+        <h3>Course strength</h3>
+        <p>Each module ends with a deployable artifact you can show: rover control, on-device AI, secure edge access.</p>
       </div>
     </section>
   </div>
