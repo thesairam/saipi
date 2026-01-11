@@ -1,72 +1,52 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Function to install Node.js and npm
-install_node() {
-    # Update package list
-    echo "Updating package list..."
-    sudo apt update
+NODE_VERSION="${NODE_VERSION:-22}"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NVM_VERSION="0.39.7"
 
-    # Install Node.js and npm
-    echo "Installing Node.js and npm..."
-    sudo apt install -y nodejs npm
+ensure_nvm() {
+    export NVM_DIR="$HOME/.nvm"
+    if [ -s "$NVM_DIR/nvm.sh" ]; then
+        # shellcheck disable=SC1090
+        . "$NVM_DIR/nvm.sh"
+        return
+    fi
 
-    # Verify the installation
-    echo "Node.js version:"
-    node -v
-
-    echo "npm version:"
-    npm -v
+    echo "Installing nvm ${NVM_VERSION}..."
+    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
+    # shellcheck disable=SC1091
+    . "$NVM_DIR/nvm.sh"
 }
 
-# Function to install Vue CLI globally
-install_vue_cli() {
-    echo "Installing Vue CLI globally..."
-    sudo npm install -g @vue/cli
+ensure_node() {
+    echo "Ensuring Node.js ${NODE_VERSION} via nvm..."
+    nvm install "${NODE_VERSION}"
+    nvm use "${NODE_VERSION}"
+
+    echo "Updating npm to latest..."
+    npm install -g npm@latest
 }
 
-# Function to install project dependencies
 install_dependencies() {
-    # Navigate to the project directory
-    echo "Navigating to project directory..."
-    cd "$(dirname "$0")"
-
-    # Install npm dependencies
-    echo "Installing project dependencies..."
-    sudo npm install
+    cd "$PROJECT_ROOT"
+    echo "Installing project dependencies (npm ci)..."
+    npm ci
 }
 
-# Function to run the Vue.js development server
-run_project() {
-    echo "Starting Vue.js development server..."
+run_dev_server() {
+    cd "$PROJECT_ROOT"
+    echo "Starting Vue dev server..."
     npm run serve
 }
 
-# Main script execution
-echo "Starting full setup and run process..."
-
-# Check if Node.js is installed
-if ! command -v node &> /dev/null
-then
-    echo "Node.js could not be found, installing now..."
-    install_node
-else
-    echo "Node.js is already installed."
-fi
-
-# Check if npm is installed
-if ! command -v npm &> /dev/null
-then
-    echo "npm could not be found, installing now..."
-    install_node
-else
-    echo "npm is already installed."
-fi
-
-# Install Vue CLI globally
-install_vue_cli
-
-# Install project dependencies
+echo "Running project setup..."
+ensure_nvm
+ensure_node
 install_dependencies
 
-# Run the project
-run_project
+if [ "${1:-}" = "--serve" ]; then
+    run_dev_server
+else
+    echo "Setup complete. Run 'npm run serve' to start the dev server."
+fi

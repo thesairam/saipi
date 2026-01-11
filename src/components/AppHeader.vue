@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="logo">Saipi.AI</div>
+    <div class="logo">SMART Vidyashram</div>
     <nav>
       <ul>
         <li><router-link to="/" exact-active-class="active">Home</router-link></li>

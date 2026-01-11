@@ -2,9 +2,9 @@
   <div class="home">
     <section class="hero">
       <div class="hero-overlay">
-        <p class="eyebrow">Education 4.0</p>
-        <h1>Learn hardware-backed products with confidence.</h1>
-        <p class="lede">We teach by building: Raspberry Pi, Linux, cloud, robotics—no passive watching.</p>
+        <p class="eyebrow">SMART Vidyashram</p>
+        <h1>Build-first learning across Science, Mathematics, AI & Analytics, Robotics, and Technology.</h1>
+        <p class="lede">Hands-on Raspberry Pi pathways that fuse STEM fundamentals with modern automation and AI—no passive watching.</p>
         <div class="actions">
           <router-link to="/courses" class="cta">Explore builds</router-link>
           <router-link to="/contact" class="ghost">Talk to us</router-link>
@@ -14,16 +14,37 @@
 
     <section class="highlights">
       <div class="tile">
-        <h3>Education 4.0: Build-first</h3>
-        <p>Short, applied loops: learn a concept, wire it to hardware, ship a demo the same day.</p>
+        <h3>S — Science</h3>
+        <p>Instrument, measure, and validate with real sensors on Raspberry Pi labs to make theory tangible.</p>
       </div>
       <div class="tile">
-        <h3>Education 4.0: Adaptive</h3>
-        <p>Projects scale with you—AI, automation, and cloud skills layered as you progress.</p>
+        <h3>M — Mathematics</h3>
+        <p>Decode signals, optimize motion, and model data so every build is grounded in numeracy and logic.</p>
       </div>
       <div class="tile">
-        <h3>Course strength</h3>
-        <p>Each module ends with a deployable artifact you can show: rover control, on-device AI, secure edge access.</p>
+        <h3>A — AI & Analytics</h3>
+        <p>Run lightweight LLMs, edge vision, and data pipelines to make your projects observant and adaptive.</p>
+      </div>
+      <div class="tile">
+        <h3>R — Robotics</h3>
+        <p>Wire GPIO, motor drivers, and autonomy loops to ship moving systems with safe power practices.</p>
+      </div>
+      <div class="tile">
+        <h3>T — Technology</h3>
+        <p>Ship complete stacks: Linux hardening, cloud exposure, APIs, and web UIs that stand up to real users.</p>
+      </div>
+    </section>
+
+    <section class="education">
+      <div class="education-content">
+        <p class="eyebrow">Education 4.0</p>
+        <h2>Apply-first, adaptive, and demonstrable</h2>
+        <p class="lede">We keep SMART projects aligned to Education 4.0: rapid build-measure-learn loops, adaptive difficulty, and artifacts you can demo.</p>
+        <ul class="edu-list">
+          <li><span class="label">Build-first:</span> start with hardware in hand and ship a working demo each sprint.</li>
+          <li><span class="label">Adaptive:</span> layer AI, automation, and cloud as you progress—no dead ends for fast learners.</li>
+          <li><span class="label">Evidence:</span> every module ends with a deployable artifact you can show or share.</li>
+        </ul>
       </div>
     </section>
   </div>
@@ -156,6 +177,58 @@ h1 {
   .actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+.education {
+  padding: 48px 24px 80px;
+  background: linear-gradient(120deg, rgba(11, 45, 38, 0.95) 0%, rgba(6, 26, 20, 0.98) 100%);
+  color: #e8f4ed;
+}
+
+.education-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid rgba(124, 242, 192, 0.18);
+  border-radius: 18px;
+  background: rgba(6, 26, 20, 0.9);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+}
+
+.education h2 {
+  margin: 10px 0 10px;
+  font-size: 2.2rem;
+  letter-spacing: -0.01em;
+}
+
+.edu-list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.edu-list li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: #cfe7d7;
+}
+
+.edu-list .label {
+  color: #7cf2c0;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .education-content {
+    padding: 22px;
+  }
+
+  .education h2 {
+    font-size: 1.9rem;
   }
 }
 </style>

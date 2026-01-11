@@ -2,9 +2,9 @@
   <div class="home">
     <section class="hero">
       <div class="hero-content">
-        <h1>Welcome to Saipi.AI</h1>
-        <p>Learn the latest in tech and build with our own infrastructure.</p>
-        <router-link to="/courses" class="cta-button">Explore Courses</router-link>
+        <h1>Welcome to SMART Vidyashram</h1>
+        <p>Science, Mathematics, AI & Analytics, Robotics, and Technology—learn by building on Raspberry Pi.</p>
+        <router-link to="/courses" class="cta-button">Explore SMART builds</router-link>
       </div>
     </section>
   </div>

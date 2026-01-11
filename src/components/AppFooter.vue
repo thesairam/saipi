@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>&copy; 2024 Saipi.AI — Education 4.0 builds on Raspberry Pi.</p>
+    <p>&copy; 2024 SMART Vidyashram — Education 4.0 builds on Raspberry Pi.</p>
   </footer>
 </template>
 

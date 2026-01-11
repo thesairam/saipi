@@ -40,8 +40,11 @@
         ></textarea>
       </div>
 
-      <button type="submit">Send inquiry</button>
-      <p class="note">We can email you a confirmation and schedule a call. To send emails automatically, connect an email API (SendGrid/Mailgun) in the submit handler.</p>
+        <input type="text" v-model="honeypot" class="hidden-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <button type="submit" :disabled="loading">{{ loading ? "Sending..." : "Send inquiry" }}</button>
+        <p class="note">We will email a confirmation to {{ email || 'your address' }}.</p>
+        <p v-if="statusMessage" :class="['status', statusError ? 'error' : 'success']">{{ statusMessage }}</p>
     </form>
   </div>
 </template>
@@ -55,20 +58,59 @@ export default {
       email: "",
       course: "",
       message: "",
+      loading: false,
+      statusMessage: "",
+      statusError: false,
+      honeypot: "",
+      endpoint: process.env.VUE_APP_FORMSPREE_ENDPOINT || "https://formspree.io/f/mkoowdpr",
     };
   },
   methods: {
-    submitForm() {
-      alert(`Thanks ${this.name}! We will follow up about ${this.courseLabel} via ${this.email}.`);
-      // To send real emails: call your backend endpoint that triggers an email service
-      // (e.g., SendGrid/Mailgun/SES) with the payload below.
-      const payload = {
-        name: this.name,
-        email: this.email,
-        course: this.courseLabel,
-        message: this.message,
-      };
-      console.log("contact form submission", payload);
+    async submitForm() {
+      this.statusMessage = "";
+      this.statusError = false;
+
+      if (this.honeypot) {
+        this.statusMessage = "Submission blocked.";
+        this.statusError = true;
+        return;
+      }
+
+      this.loading = true;
+      try {
+        const payload = {
+          name: this.name,
+          email: this.email,
+          course: this.courseLabel,
+          message: this.message,
+        };
+
+        const res = await fetch(this.endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Request failed (${res.status})`);
+        }
+
+        this.statusMessage = "Thanks! We received your message and will reply soon.";
+        this.statusError = false;
+        this.name = "";
+        this.email = "";
+        this.course = "";
+        this.message = "";
+      } catch (err) {
+        console.error("contact form error", err);
+        this.statusMessage = "Could not send right now. Please try again in a moment.";
+        this.statusError = true;
+      } finally {
+        this.loading = false;
+      }
     },
   },
   computed: {
@@ -126,23 +168,31 @@ h2 {
   background: rgba(6, 26, 20, 0.92);
   border: 1px solid rgba(124, 242, 192, 0.15);
   border-radius: 16px;
-  padding: 26px;
+  padding: 28px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-form * {
+  box-sizing: border-box;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .form-group {
-  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
 }
 
 label {
-  display: block;
-  margin-bottom: 8px;
   color: #cfe7d7;
   font-weight: 600;
 }
@@ -187,9 +237,31 @@ button:hover {
 }
 
 .note {
-  margin-top: 10px;
+  margin-top: 4px;
   color: #9dcab3;
   font-size: 0.95rem;
+}
+
+.status {
+  margin-top: 2px;
+  font-size: 0.95rem;
+}
+
+.status.success {
+  color: #7cf2c0;
+}
+
+.status.error {
+  color: #ffb4a2;
+}
+
+.hidden-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {
